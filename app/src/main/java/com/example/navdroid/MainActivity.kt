@@ -1,6 +1,7 @@
 package com.example.navdroid
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +14,7 @@ import com.example.navdroid.feature.BottomNavigationBar
 import com.example.navdroid.navigation.MainNavHost
 import com.example.navdroid.navigation.Route
 import com.example.navdroid.ui.theme.NavDroidTheme
+import com.example.navdroid.feature.TopBarWithBackArrow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,11 @@ fun MainPage() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopBarWithBackArrow("Go Back") {
+                Log.d("MainActivity", "Back Arrow Clicked")
+            }
+        },
         bottomBar = {
             BottomNavigationBar(navController, bottomNavItems)
         }
