@@ -59,10 +59,14 @@ fun MainPage() {
                 navController = navController,
                 startDestination = "section1"
             ) {
-                composable("section1") { SectionScreen("Home") }
-                composable("section2") { SectionScreen("Search") }
-                composable("section3") { SectionScreen("Profile") }
-                composable("section4") { SectionScreen("Settings") }
+                composable("section1") { SectionScreen(navController, "Home") }
+                composable("section2") { SectionScreen(navController,"Search") }
+                composable("section3") { SectionScreen(navController,"Profile") }
+                composable("section4") { SectionScreen(navController,"Settings") }
+                composable("section5") { SectionScreen(navController,"Page A") }
+                composable("section6") { SectionScreen(navController,"Page B") }
+                composable("section7") { SectionScreen(navController,"Page C") }
+                composable("section8") { SectionScreen(navController,"Page D") }
             }
 
             // NonBottomButtons is included in the same vertical arrangement
@@ -144,7 +148,7 @@ fun currentRoute(navController: NavController): String? {
 }
 
 @Composable
-fun SectionScreen(sectionName: String) {
+fun SectionScreen(navController: NavController, sectionName: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -163,7 +167,15 @@ fun SectionScreen(sectionName: String) {
             ) {
                 for (i in 1..4) {
                     Button(
-                        onClick = { /* Handle button click */ },
+                        onClick = {
+                            navController.navigate("section${i}") {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(0.8f)
                     ) {
                         Text(text = "Button $i")
@@ -179,7 +191,15 @@ fun SectionScreen(sectionName: String) {
             ) {
                 for (i in 5..8) {
                     Button(
-                        onClick = { /* Handle button click */ },
+                        onClick = {
+                            navController.navigate("section${i}") {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(0.8f)
                     ) {
                         Text(text = "Button $i")
