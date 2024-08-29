@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.navdroid.navigation.Route
 import com.example.navdroid.ui.theme.NavDroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +42,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainPage() {
     val navController = rememberNavController()
-    val bottomNavItems = listOf("Home", "Search", "Profile", "Settings")
+    val bottomNavItems = listOf(Route.PageE, Route.PageF, Route.PageG, Route.PageH)
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -57,78 +59,82 @@ fun MainPage() {
             // Navigation host for managing different screen navigations
             NavHost(
                 navController = navController,
-                startDestination = "section1"
+                startDestination = Route.PageE
             ) {
-                composable("section1") { SectionScreen(navController, "Home") }
-                composable("section2") { SectionScreen(navController,"Search") }
-                composable("section3") { SectionScreen(navController,"Profile") }
-                composable("section4") { SectionScreen(navController,"Settings") }
-                composable("section5") { SectionScreen(navController,"Page A") }
-                composable("section6") { SectionScreen(navController,"Page B") }
-                composable("section7") { SectionScreen(navController,"Page C") }
-                composable("section8") { SectionScreen(navController,"Page D") }
+
+                composable(Route.PageA) { SectionScreen(navController,"Page A") }
+                composable(Route.PageB) { SectionScreen(navController,"Page B") }
+                composable(Route.PageC) { SectionScreen(navController,"Page C") }
+                composable(Route.PageD) { SectionScreen(navController,"Page D") }
+                composable(Route.PageE) { SectionScreen(navController,"Page E") }
+                composable(Route.PageF) { SectionScreen(navController,"Page F") }
+                composable(Route.PageG) { SectionScreen(navController,"Page G") }
+                composable(Route.PageH) { SectionScreen(navController,"Page H") }
             }
 
-            // NonBottomButtons is included in the same vertical arrangement
-            NonBottomButtons(navController)
         }
     }
 }
 
+@Composable
+fun NonBottomSingleButton(navController: NavController, routeName: String) {
+    Button(
+        onClick = {
+            navController.navigate(routeName) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
+        modifier = Modifier.fillMaxWidth(0.8f)
+    ) {
+        Text(text = routeName)
+    }
+}
 
 @Composable
 fun NonBottomButtons(navController: NavController) {
     Column(
+        modifier = Modifier.padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        repeat(8) { index ->
-            Button(
-                onClick = {
-                    if (index < 4) {
-                        // Navigate to bottom navigation sections based on button index
-                        navController.navigate("section${index + 1}") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    } else {
-                        // Handle other button actions
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-            ) {
-                Text(text = "Button ${index + 1}")
-            }
-        }
+        NonBottomSingleButton(navController, Route.PageA)
+        NonBottomSingleButton(navController, Route.PageB)
+        NonBottomSingleButton(navController, Route.PageC)
+        NonBottomSingleButton(navController, Route.PageD)
+        NonBottomSingleButton(navController, Route.PageE)
+        NonBottomSingleButton(navController, Route.PageF)
+        NonBottomSingleButton(navController, Route.PageG)
+        NonBottomSingleButton(navController, Route.PageH)
     }
 }
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController, items: List<String>) {
     NavigationBar {
         val currentRoute = currentRoute(navController)
-        items.forEachIndexed { index, item ->
+        items.forEachIndexed { _, item ->
             NavigationBarItem(
                 icon = {
                     Icon(
-                        imageVector = when (index) {
-                            0 -> Icons.Default.Home
-                            1 -> Icons.Default.Search
-                            2 -> Icons.Default.Person
-                            else -> Icons.Default.Settings
+                        imageVector = when (item) {
+                            Route.PageE -> Icons.Default.Home
+                            Route.PageF -> Icons.Default.Search
+                            Route.PageG -> Icons.Default.Person
+                            Route.PageH -> Icons.Default.Settings
+                            else -> Icons.Default.Menu
                         },
                         contentDescription = item
                     )
                 },
                 label = { Text(text = item) },
-                selected = currentRoute == "section${index + 1}",
+                selected = currentRoute == item,
                 onClick = {
-                    navController.navigate("section${index + 1}") {
+                    navController.navigate(item) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -158,54 +164,7 @@ fun SectionScreen(navController: NavController, sectionName: String) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(text = "Welcome to $sectionName", fontSize = 24.sp)
-
-            // First part: First four buttons
-            Column(
-                modifier = Modifier.padding(top = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                for (i in 1..4) {
-                    Button(
-                        onClick = {
-                            navController.navigate("section${i}") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(0.8f)
-                    ) {
-                        Text(text = "Button $i")
-                    }
-                }
-            }
-
-            // Second part: Next four buttons
-            Column(
-                modifier = Modifier.padding(top = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                for (i in 5..8) {
-                    Button(
-                        onClick = {
-                            navController.navigate("section${i}") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(0.8f)
-                    ) {
-                        Text(text = "Button $i")
-                    }
-                }
-            }
+            NonBottomButtons(navController)
         }
     }
 }
