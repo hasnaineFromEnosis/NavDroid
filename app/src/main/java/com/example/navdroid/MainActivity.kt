@@ -36,9 +36,7 @@ fun MainPage() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopBarWithBackArrow("Go Back") {
-                Log.d("MainActivity", "Back Arrow Clicked")
-            }
+            TopBarWithBackArrow(navController,"Go Back")
         },
         bottomBar = {
             BottomNavigationBar(navController, bottomNavItems)

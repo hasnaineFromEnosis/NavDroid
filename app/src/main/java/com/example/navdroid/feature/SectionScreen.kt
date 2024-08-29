@@ -13,12 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import com.example.navdroid.navigation.NavEvent
+import com.example.navdroid.navigation.NavUtilities
 import com.example.navdroid.navigation.Route
 
 @Composable
-fun SectionScreen(navController: NavController, sectionName: String) {
+fun SectionScreen(navController: NavHostController, sectionName: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -34,16 +35,10 @@ fun SectionScreen(navController: NavController, sectionName: String) {
 }
 
 @Composable
-fun NonBottomSingleButton(navController: NavController, routeName: String) {
+fun NonBottomSingleButton(navController: NavHostController, routeName: String) {
     Button(
         onClick = {
-            navController.navigate(routeName) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+            NavUtilities.HandleNavigationEvent(NavEvent.Navigate(navController,routeName))
         },
         modifier = Modifier.fillMaxWidth(0.8f)
     ) {
@@ -52,7 +47,7 @@ fun NonBottomSingleButton(navController: NavController, routeName: String) {
 }
 
 @Composable
-fun NonBottomButtons(navController: NavController) {
+fun NonBottomButtons(navController: NavHostController) {
     Column(
         modifier = Modifier.padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

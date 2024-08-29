@@ -13,12 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.navdroid.navigation.NavEvent
+import com.example.navdroid.navigation.NavUtilities
 import com.example.navdroid.navigation.Route
 
 @Composable
-fun BottomNavigationBar(navController: NavController, items: List<String>) {
+fun BottomNavigationBar(navController: NavHostController, items: List<String>) {
     NavigationBar {
         val currentRoute = currentRoute(navController)
         items.forEachIndexed { _, item ->
@@ -38,13 +40,7 @@ fun BottomNavigationBar(navController: NavController, items: List<String>) {
                 label = { Text(text = item) },
                 selected = currentRoute == item,
                 onClick = {
-                    navController.navigate(item) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    NavUtilities.HandleNavigationEvent(NavEvent.Navigate(navController,item))
                 }
             )
         }
