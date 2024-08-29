@@ -149,6 +149,43 @@ fun SectionScreen(sectionName: String) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Welcome to $sectionName", fontSize = 24.sp)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(text = "Welcome to $sectionName", fontSize = 24.sp)
+
+            // First part: First four buttons
+            Column(
+                modifier = Modifier.padding(top = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                for (i in 1..4) {
+                    Button(
+                        onClick = { /* Handle button click */ },
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                    ) {
+                        Text(text = "Button $i")
+                    }
+                }
+            }
+
+            // Second part: Next four buttons
+            Column(
+                modifier = Modifier.padding(top = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                for (i in 5..8) {
+                    Button(
+                        onClick = { /* Handle button click */ },
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                    ) {
+                        Text(text = "Button $i")
+                    }
+                }
+            }
+        }
     }
 }
