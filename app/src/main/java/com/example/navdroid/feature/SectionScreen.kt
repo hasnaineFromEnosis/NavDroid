@@ -38,7 +38,7 @@ fun SectionScreen(navController: NavHostController, sectionName: String) {
 fun NonBottomSingleButton(navController: NavHostController, routeName: String) {
     Button(
         onClick = {
-            NavUtilities.HandleNavigationEvent(NavEvent.Navigate(navController,routeName))
+            NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController,routeName))
         },
         modifier = Modifier.fillMaxWidth(0.8f)
     ) {

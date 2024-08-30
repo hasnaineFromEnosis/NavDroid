@@ -1,29 +1,31 @@
 package com.example.navdroid.navigation
 
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 class NavUtilities private constructor() {
     companion object {
         fun HandleNavigationEvent(event: NavEvent) {
             when(event) {
-                is NavEvent.BottomNavNavigate -> TODO()
-                is NavEvent.Navigate -> handleNavigate(event.navController, event.route)
-                is NavEvent.PopBackStack -> handlePopBackStack(event.navController)
-                is NavEvent.PopUpToRoute -> TODO()
+                is NavEvent.NavigateFront -> handleNavigateFront(event.navController, event.route)
+                is NavEvent.NavigateBack -> handleNavigateBack(event.navController)
             }
         }
 
-        private fun handleNavigate(navController: NavHostController, route: String) {
+        private fun handleNavigateFront(navController: NavHostController, route: String) {
             navController.navigate(route) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        launchSingleTop = true
-//                        restoreState = true
+                if (route == Route.PageE
+                    || route == Route.PageF
+                    || route == Route.PageG
+                    || route == Route.PageH) {
+                    popUpTo(Route.PageE) {
+                        inclusive = route == Route.PageE
+                    }
+                }
             }
         }
 
-        private fun handlePopBackStack(navController: NavHostController) {
+        private fun handleNavigateBack(navController: NavHostController) {
             navController.navigateUp()
         }
     }

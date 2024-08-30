@@ -22,7 +22,7 @@ fun TopBarWithBackArrow(
         title = { Text(text = title) },
         navigationIcon = {
             IconButton(onClick = {
-                NavUtilities.HandleNavigationEvent(NavEvent.PopBackStack(navController))
+                NavUtilities.HandleNavigationEvent(NavEvent.NavigateBack(navController))
             }) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,

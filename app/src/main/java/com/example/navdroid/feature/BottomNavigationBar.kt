@@ -40,7 +40,7 @@ fun BottomNavigationBar(navController: NavHostController, items: List<String>) {
                 label = { Text(text = item) },
                 selected = currentRoute == item,
                 onClick = {
-                    NavUtilities.HandleNavigationEvent(NavEvent.Navigate(navController,item))
+                    NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController,item))
                 }
             )
         }
