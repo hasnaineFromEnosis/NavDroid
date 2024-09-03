@@ -32,26 +32,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainPage() {
     val navController = rememberNavController()
-    val bottomNavItems = listOf(Route.PageE, Route.PageF, Route.PageG, Route.PageH)
+    val bottomNavController = rememberNavController()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopBarWithBackArrow(navController,"Go Back")
-        },
-        bottomBar = {
-            BottomNavigationBar(navController, bottomNavItems)
-        }
-    ) { innerPadding ->
-        // This Column is used to combine NavHost and NonBottomButtons in a vertical arrangement
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            MainNavHost(navController)
-        }
-    }
+    MainNavHost(navController, bottomNavController)
 }
 
 
