@@ -1,6 +1,5 @@
 package com.example.navdroid.navigation
 
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 class NavUtilities private constructor() {

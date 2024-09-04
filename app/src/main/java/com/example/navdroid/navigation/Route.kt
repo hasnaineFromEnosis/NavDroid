@@ -1,6 +1,10 @@
 package com.example.navdroid.navigation
 
 object Route {
+    const val MainRoute = "Main_Route"
+
+    const val BaseScreen = "BaseScreen"
+
     const val PageA = "PageA"
     const val PageB = "PageB"
     const val PageC = "PageC"

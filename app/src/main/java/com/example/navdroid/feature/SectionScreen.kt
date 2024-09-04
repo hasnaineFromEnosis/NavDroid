@@ -15,45 +15,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.navdroid.navigation.BottomNavHost
 import com.example.navdroid.navigation.NavEvent
 import com.example.navdroid.navigation.NavUtilities
 import com.example.navdroid.navigation.Route
 
 object SectionScreen {
-    private lateinit var mainNavController: NavHostController
-    private lateinit var bottomNavController: NavHostController
+
+    private var isBaseScreen: Boolean = false
+    private var isBottomNavigationScreen: Boolean = false
 
     @Composable
-    fun BaseComposable(navController: NavHostController,
-                       bottomNavController: NavHostController,
-                       sectionName: String) {
-
-        this.mainNavController = navController
-        this.bottomNavController = bottomNavController
-
+    fun BaseComposable(
+        navController: NavHostController,
+        bottomNavController: NavHostController,
+        sectionName: String,
+        isBaseScreen: Boolean = false,
+        isBottomNavigationScreen: Boolean = false,
+    ) {
         val bottomNavItems = listOf(Route.PageE, Route.PageF, Route.PageG, Route.PageH)
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopBarWithBackArrow(navController,"Go Back")
-            },
-            bottomBar = {
-                BottomNavigationBar(bottomNavController, bottomNavItems)
-            }
-        ) { innerPadding ->
-            // This Column is used to combine NavHost and NonBottomButtons in a vertical arrangement
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                ContentBox(sectionName)
+        this.isBaseScreen = isBaseScreen
+        this.isBottomNavigationScreen = isBottomNavigationScreen
+
+        if (isBaseScreen) {
+            BottomNavHost(navController, bottomNavController)
+        } else {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    TopBarWithBackArrow( if(isBottomNavigationScreen) bottomNavController else navController, "Go Back")
+                },
+                bottomBar = {
+                    BottomNavigationBar(bottomNavController, bottomNavItems)
+                }
+            ) { innerPadding ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    ContentBox(navController, bottomNavController, sectionName)
+                }
             }
         }
     }
 
     @Composable
-    fun ContentBox(sectionName: String) {
+    fun ContentBox(
+        navController: NavHostController,
+        bottomNavController: NavHostController,
+        sectionName: String
+    ) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -63,7 +75,7 @@ object SectionScreen {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(text = "Welcome to $sectionName", fontSize = 24.sp)
-                NonBottomButtons()
+                NonBottomButtons(navController, bottomNavController)
             }
         }
     }
@@ -72,7 +84,7 @@ object SectionScreen {
     fun NonBottomSingleButton(navController: NavHostController, routeName: String) {
         Button(
             onClick = {
-                NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController,routeName))
+                NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController, routeName))
             },
             modifier = Modifier.fillMaxWidth(0.8f)
         ) {
@@ -81,16 +93,19 @@ object SectionScreen {
     }
 
     @Composable
-    fun NonBottomButtons() {
+    fun NonBottomButtons(
+        navController: NavHostController,
+        bottomNavController: NavHostController
+    ) {
         Column(
             modifier = Modifier.padding(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            NonBottomSingleButton(mainNavController, Route.PageA)
-            NonBottomSingleButton(mainNavController, Route.PageB)
-            NonBottomSingleButton(mainNavController, Route.PageC)
-            NonBottomSingleButton(mainNavController, Route.PageD)
+            NonBottomSingleButton(navController, Route.PageA)
+            NonBottomSingleButton(navController, Route.PageB)
+            NonBottomSingleButton(navController, Route.PageC)
+            NonBottomSingleButton(navController, Route.PageD)
             NonBottomSingleButton(bottomNavController, Route.PageE)
             NonBottomSingleButton(bottomNavController, Route.PageF)
             NonBottomSingleButton(bottomNavController, Route.PageG)
