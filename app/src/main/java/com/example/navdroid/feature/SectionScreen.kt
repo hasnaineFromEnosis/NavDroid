@@ -46,7 +46,9 @@ object SectionScreen {
                     TopBarWithBackArrow( if(isBottomNavigationScreen) bottomNavController else navController, "Go Back")
                 },
                 bottomBar = {
-                    BottomNavigationBar(bottomNavController, bottomNavItems)
+                    if (isBottomNavigationScreen) {
+                        BottomNavigationBar(bottomNavController, bottomNavItems)
+                    }
                 }
             ) { innerPadding ->
                 Column(
@@ -106,10 +108,13 @@ object SectionScreen {
             NonBottomSingleButton(navController, Route.PageB)
             NonBottomSingleButton(navController, Route.PageC)
             NonBottomSingleButton(navController, Route.PageD)
-            NonBottomSingleButton(bottomNavController, Route.PageE)
-            NonBottomSingleButton(bottomNavController, Route.PageF)
-            NonBottomSingleButton(bottomNavController, Route.PageG)
-            NonBottomSingleButton(bottomNavController, Route.PageH)
+
+            if (isBottomNavigationScreen) {
+                NonBottomSingleButton(bottomNavController, Route.PageE)
+                NonBottomSingleButton(bottomNavController, Route.PageF)
+                NonBottomSingleButton(bottomNavController, Route.PageG)
+                NonBottomSingleButton(bottomNavController, Route.PageH)
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.navdroid.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,7 +16,19 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.MainRoute
+        startDestination = Route.MainRoute,
+        enterTransition = {
+            EnterTransition.None
+        },
+        exitTransition = {
+            ExitTransition.None
+        },
+        popEnterTransition = {
+            EnterTransition.None
+        },
+        popExitTransition = {
+            ExitTransition.None
+        },
     ) {
         navigation(
             startDestination = Route.BaseScreen,

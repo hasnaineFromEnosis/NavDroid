@@ -1,5 +1,7 @@
 package com.example.navdroid.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +15,19 @@ fun BottomNavHost(
 ) {
     NavHost(
         navController = bottomNavController,
-        startDestination = Route.PageE
+        startDestination = Route.PageE,
+        enterTransition = {
+            EnterTransition.None
+        },
+        exitTransition = {
+            ExitTransition.None
+        },
+        popEnterTransition = {
+            EnterTransition.None
+        },
+        popExitTransition = {
+            ExitTransition.None
+        },
     ) {
         composable(Route.PageE) { SectionScreen.BaseComposable(navController, bottomNavController,"Page E", isBottomNavigationScreen = true) }
         composable(Route.PageF) { SectionScreen.BaseComposable(navController, bottomNavController,"Page F", isBottomNavigationScreen = true) }
