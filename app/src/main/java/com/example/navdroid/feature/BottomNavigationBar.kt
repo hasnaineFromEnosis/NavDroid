@@ -20,7 +20,7 @@ import com.example.navdroid.navigation.NavUtilities
 import com.example.navdroid.navigation.Route
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController, items: List<String>) {
+fun BottomNavigationBar(navController: NavHostController, items: List<String>, isBottomNavigationActive: Boolean) {
     NavigationBar {
         val currentRoute = currentRoute(navController)
         items.forEachIndexed { _, item ->
@@ -38,7 +38,7 @@ fun BottomNavigationBar(navController: NavHostController, items: List<String>) {
                     )
                 },
                 label = { Text(text = item) },
-                selected = currentRoute == item,
+                selected = currentRoute == item && isBottomNavigationActive,
                 onClick = {
                     NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController,item))
                 }

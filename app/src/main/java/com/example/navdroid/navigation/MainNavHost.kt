@@ -34,7 +34,7 @@ fun MainNavHost(
             startDestination = Route.BaseScreen,
             route = Route.MainRoute
         ) {
-            composable(Route.BaseScreen) {SectionScreen.BaseComposable(
+            composable(Route.BaseScreen) { SectionScreen.BaseComposable(
                 navController,
                 bottomNavController,
                 sectionName = "",

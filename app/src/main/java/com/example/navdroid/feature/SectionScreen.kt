@@ -46,7 +46,7 @@ object SectionScreen {
                     TopBarWithBackArrow( if(isBottomNavigationScreen) bottomNavController else navController, "Go Back")
                 },
                 bottomBar = {
-                    BottomNavigationBar(bottomNavController, bottomNavItems)
+                    BottomNavigationBar(bottomNavController, bottomNavItems, isBottomNavigationScreen)
                 }
             ) { innerPadding ->
                 Column(
