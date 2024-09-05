@@ -46,9 +46,7 @@ object SectionScreen {
                     TopBarWithBackArrow( if(isBottomNavigationScreen) bottomNavController else navController, "Go Back")
                 },
                 bottomBar = {
-                    if (isBottomNavigationScreen) {
-                        BottomNavigationBar(bottomNavController, bottomNavItems)
-                    }
+                    BottomNavigationBar(bottomNavController, bottomNavItems)
                 }
             ) { innerPadding ->
                 Column(
@@ -83,9 +81,10 @@ object SectionScreen {
     }
 
     @Composable
-    fun NonBottomSingleButton(navController: NavHostController, routeName: String) {
+    fun NonBottomSingleButton(navController: NavHostController, routeName: String, onClick: (() -> Unit)? = null) {
         Button(
             onClick = {
+                onClick?.invoke()
                 NavUtilities.HandleNavigationEvent(NavEvent.NavigateFront(navController, routeName))
             },
             modifier = Modifier.fillMaxWidth(0.8f)
@@ -109,12 +108,18 @@ object SectionScreen {
             NonBottomSingleButton(navController, Route.PageC)
             NonBottomSingleButton(navController, Route.PageD)
 
-            if (isBottomNavigationScreen) {
-                NonBottomSingleButton(bottomNavController, Route.PageE)
-                NonBottomSingleButton(bottomNavController, Route.PageF)
-                NonBottomSingleButton(bottomNavController, Route.PageG)
-                NonBottomSingleButton(bottomNavController, Route.PageH)
-            }
+            NonBottomSingleButton(bottomNavController, Route.PageE,
+                onClick = { resetToBaseScreen(navController) })
+            NonBottomSingleButton(bottomNavController, Route.PageF,
+                onClick = { resetToBaseScreen(navController) })
+            NonBottomSingleButton(bottomNavController, Route.PageG,
+                onClick = { resetToBaseScreen(navController) })
+            NonBottomSingleButton(bottomNavController, Route.PageH,
+                onClick = { resetToBaseScreen(navController) })
         }
+    }
+
+    private fun resetToBaseScreen(navController: NavHostController) {
+        navController.popBackStack(Route.BaseScreen, inclusive = false)
     }
 }
